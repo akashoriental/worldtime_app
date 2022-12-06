@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:worldtime_app/constant.dart';
 import 'package:flutter/material.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -39,6 +39,7 @@ class _HomeState extends State<Home> {
                         'temp': result['temp'],
                         'country': result['country'],
                         'isDaytime': result['isDaytime'],
+                        'time' : result['time'],
                       };
                     });
                   }
@@ -52,9 +53,18 @@ class _HomeState extends State<Home> {
                   ),
                 )
             ),
-            Text('Your Current Location is  '+data['location'].toString(),style: TextStyle(backgroundColor: Colors.deepOrange,fontWeight: FontWeight.w700,color: Colors.white,fontStyle: FontStyle.italic,fontSize: 30),),
+            Container(
+              color: Colors.black,
+              child: Text(data['time'],style: KTextStyle),
+              width: 100,
+            ),
+            Container(
+                color: Colors.black,
+                child: Text('Your Current Location is  '+data['location'].toString(),style: KTextStyle)),
 
-            Text('Current temp is  '+data['temp'].toString()+'°C',style: TextStyle(backgroundColor: Colors.deepOrange,fontWeight: FontWeight.w700,color: Colors.white,fontStyle: FontStyle.italic,fontSize: 30),),
+            Container(
+              color: Colors.black,
+                child: Text('Current temp is  '+data['temp'].toString()+'°C',style: KTextStyle)),
 
             Text('Your Current country code is  '+data['country'].toString(),style: TextStyle(backgroundColor: Colors.deepOrange,fontWeight: FontWeight.w700,color: Colors.white,fontStyle: FontStyle.italic,fontSize: 30),),
             ElevatedButton(onPressed: (){

@@ -19,7 +19,8 @@ class _LoadingState extends State<Loading> {
       'location': instance.location,
       'temp': instance.temp,
       'country': instance.country,
-      'isDaytime': instance.isDaytime
+      'isDaytime': instance.isDaytime,
+      'time': instance.time,
     });
   }
   @override

@@ -7,6 +7,7 @@ class WorldTime {
   int ?temp;
   String ?country;
   bool? isDaytime;
+  String ?time;
   WorldTime({required this.location});
   Future<void> getTime() async {
     // make the request
@@ -20,13 +21,17 @@ class WorldTime {
      temp=mausam!.toInt();
      country = data['sys']['country'];
      final utc_time = DateTime.now().toUtc();
-     int hour=(data['timezone']/3600).toInt()+utc_time.hour;
+     final dayyime = DateTime.now().toUtc().add(Duration(seconds: data['timezone']));
+     print(dayyime);
+     int hour=dayyime.hour;
+     int min=dayyime.minute;
+     time = min<10?'$hour : 0$min':'$hour : $min';
     isDaytime = hour > 6 && hour < 20 ? true : false;
      //final minutes = (data['timezone']/3600).toString().split('.')[1];
     print(location);
     print(temp!.toInt());
     print(country);
-    print(hour);
+    print(time);
 
     // create DateTime object
     // DateTime now = DateTime.parse(datetime);
