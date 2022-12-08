@@ -12,15 +12,9 @@ class _ChooseLocationState extends State<ChooseLocation> {
   String ?entercity;
   void updateTime(String city) async {
     try {
-      WorldTime instance = WorldTime(location: city);
-      await instance.getTime();
-      Navigator.pop(context, {
-        'location': instance.location,
-        'temp': instance.temp,
-        'country': instance.country,
-        'isDaytime': instance.isDaytime,
-        'time' : instance.time,
-      });
+      WorldTime instance = WorldTime.instance;
+      await instance.getTime(city);
+      Navigator.pop(context);
     }
     catch(e){
       print(e);
@@ -34,10 +28,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
         ],
       ));
     }
-  }
-  @override
-  void initState() {
-    super.initState();
   }
   @override
   Widget build(BuildContext context) {

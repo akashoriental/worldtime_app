@@ -1,19 +1,30 @@
 import 'dart:ui';
 import 'package:worldtime_app/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:worldtime_app/modal.dart';
+import 'package:worldtime_app/pages/world_time.dart';
+DateTime getTime(int timezone) {
+  return DateTime.now().toUtc().add(
+      Duration(seconds: timezone));
+}
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
-
 class _HomeState extends State<Home> {
-  Map data={};
+  Welcome? data;
+  WorldTime worldTime=WorldTime.instance;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    data=worldTime.getWeather();
+  }
   @override
   Widget build(BuildContext context) {
-    data = data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;
-    String bgImage = data['isDaytime'] ? 'sunny.jpeg' : 'night.jpeg';
+    String bgImage = 'sunny.jpeg';
     return Scaffold(
       backgroundColor: Colors.deepPurpleAccent,
       body: SafeArea(
@@ -32,17 +43,6 @@ class _HomeState extends State<Home> {
             TextButton.icon(
                 onPressed: () async{
                   dynamic result=await Navigator.pushNamed(context, '/location');
-                  if(result != null){
-                    setState(() {
-                      data = {
-                        'location': result['location'],
-                        'temp': result['temp'],
-                        'country': result['country'],
-                        'isDaytime': result['isDaytime'],
-                        'time' : result['time'],
-                      };
-                    });
-                  }
                 },
                 icon: Icon(Icons.edit_location),
                 label: Text(
@@ -55,18 +55,17 @@ class _HomeState extends State<Home> {
             ),
             Container(
               color: Colors.black,
-              child: Text(data['time'],style: KTextStyle),
-              width: 100,
+              child: Text(getTime(data!.timezone!).toString(),style: KTextStyle),
             ),
             Container(
                 color: Colors.black,
-                child: Text('Your Current Location is  '+data['location'].toString(),style: KTextStyle)),
+                child: Text('Your Current Location is  ${data!.name}',style: KTextStyle)),
 
             Container(
               color: Colors.black,
-                child: Text('Current temp is  '+data['temp'].toString()+'°C',style: KTextStyle)),
+                child: Text('Current temp is  ${data!.main!.temp}°C',style: KTextStyle)),
 
-            Text('Your Current country code is  '+data['country'].toString(),style: TextStyle(backgroundColor: Colors.deepOrange,fontWeight: FontWeight.w700,color: Colors.white,fontStyle: FontStyle.italic,fontSize: 30),),
+            Text('Your Current country code is  ${data!.sys!.country}',style: TextStyle(backgroundColor: Colors.deepOrange,fontWeight: FontWeight.w700,color: Colors.white,fontStyle: FontStyle.italic,fontSize: 30),),
             ElevatedButton(onPressed: (){
               Navigator.pushNamed(context, '/');
             },

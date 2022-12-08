@@ -13,15 +13,9 @@ class _LoadingState extends State<Loading> {
   void setWorldtime() async{
     Location location = Location();
     await location.getCurrentLocation();
-    WorldTime instance = WorldTime(location: location.city);
-    await instance.getTime();
-    Navigator.pushReplacementNamed(context, '/home', arguments: {
-      'location': instance.location,
-      'temp': instance.temp,
-      'country': instance.country,
-      'isDaytime': instance.isDaytime,
-      'time': instance.time,
-    });
+    WorldTime instance = WorldTime.instance;
+    await instance.getTime(location.city);
+    Navigator.pushReplacementNamed(context, '/home');
   }
   @override
   void initState() {
